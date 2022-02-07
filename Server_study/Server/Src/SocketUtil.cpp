@@ -1,22 +1,76 @@
 #include "ServerPCH.h"
 
-UDPSocketPtr SocketUtil::CreateUDPSocket(int inFamily)
+bool SocketUtil::StaticInit() //소켓 라이브러리 활성화
+{
+#if _WIN32
+	WSADATA wsaData;
+	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	if (iResult != NO_ERROR)
+	{
+		ReportError("Starting Up");
+		return false;
+	}
+#endif
+	return true;
+}
+
+void SocketUtil::CleanUp() //소켓 라이브러리 종료
+{
+#if _WIN32
+	WSACleanup();
+#endif
+}
+
+void SocketUtil::ReportError(const char* inOperationDesc) //오류 리포트
+{
+#if _WIN32
+	LPVOID lpMsgBuf;
+	DWORD errorNum = GetLastError();
+
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		errorNum,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)&lpMsgBuf,
+		0, NULL);
+
+
+	LOG("Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf);
+#else
+	LOG("Error: %hs", inOperationDesc);
+#endif
+}
+
+int SocketUtil::GetLastError() //마지막 오류 출력
+{
+#if _WIN32
+	return WSAGetLastError();
+#else
+	return errno;
+#endif
+
+}
+
+UDPSocketPtr SocketUtil::CreateUDPSocket(int inFamily) //UDP소켓 생성
 {
 	SOCKET s = socket(inFamily, SOCK_DGRAM, IPPROTO_UDP);
 	if (s != INVALID_SOCKET)
 		return UDPSocketPtr(new UDPSocket(s));
 
+	ReportError("SocketUtil::CreateUDPSocket");
 	return nullptr;
 }
 
-TCPSocketPtr SocketUtil::CreateTCPSocket(int inFamily)
+TCPSocketPtr SocketUtil::CreateTCPSocket(int inFamily) //TCP소켓 생성
 {
 	SOCKET s = socket(inFamily, SOCK_STREAM, IPPROTO_TCP);
 	if (s != INVALID_SOCKET)
 		return TCPSocketPtr(new TCPSocket(s));
 
-	printf("%d", WSAGetLastError());
-
+	ReportError("SocketUtil::CreateTCPSocket");
 	return nullptr;
 }
 

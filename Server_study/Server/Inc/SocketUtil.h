@@ -26,8 +26,11 @@ public:
 								const vector< TCPSocketPtr >* inExceptSet,
 								vector< TCPSocketPtr >* outExceptSet);
 
-	//static void			ReportError(const char* inOperationDesc);
-	//static int			GetLastError();
+	static void			ReportError(const char* inOperationDesc);
+	static int			GetLastError();
+	static bool			StaticInit();
+	static void			CleanUp();
+
 	virtual ~SocketUtil();
 };
 

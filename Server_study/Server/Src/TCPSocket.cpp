@@ -6,9 +6,8 @@ int TCPSocket::Bind(const SocketAddress& inBindAddress)
 	if (err == 0)			//bind함수는 성공시 0 , 실패시 -1을 리턴한다.			//소켓 , 바인딩할 주소 , 주소로 넘긴 sockaddr의 길이를 인자로 받는다
 		return NO_ERROR;
 
-	return -1;
-	//SocketUtil::ReportError(L"TCPSocket::Bind");
-	//return SocketUtil::GetLastError();
+	SocketUtil::ReportError("TCPSocket::Bind");
+	return SocketUtil::GetLastError();
 }
 
 int TCPSocket::Connect(const SocketAddress& inAddress)
@@ -17,9 +16,8 @@ int TCPSocket::Connect(const SocketAddress& inAddress)
 	if (err >= 0)			//connect함수는 성공시 0 , 실패시 -1을 리턴한다.		// 사용하고자 하는 소켓 , 원격 호스트의 주소를 가리키는 포인터, 포인터의 길이를 인자로 받는다.
 		return NO_ERROR;
 
-	return -1;
-	//SocketUtil::ReportError(L"TCPSocket::Connect");
-	//return -SocketUtil::GetLastError();
+	SocketUtil::ReportError("TCPSocket::Connect");
+	return -SocketUtil::GetLastError();
 }
 
 int TCPSocket::Listen(int inBackLog)
@@ -28,9 +26,8 @@ int TCPSocket::Listen(int inBackLog)
 	if (err >= 0)			//listen함수는 성공시 0 , 실패시 -1을 리턴한다.			// 리스닝 모드에 둘 소켓과 들어오는 연결을 대기열에 둘 최대 숫자를 지정
 		return NO_ERROR;
 
-	return -1;
-	//SocketUtil::ReportError(L"TCPSocket::Listen");
-	//return -SocketUtil::GetLastError();
+	SocketUtil::ReportError("TCPSocket::Listen");
+	return -SocketUtil::GetLastError();
 }
 
 TCPSocketPtr TCPSocket::Accept(SocketAddress& inFromAddress)
@@ -41,7 +38,7 @@ TCPSocketPtr TCPSocket::Accept(SocketAddress& inFromAddress)
 	if (newSocket != INVALID_SOCKET)												//이 소켓은 이후 그 원격 호스트와 통신하는 용도로 쓰인다.
 		return TCPSocketPtr(new TCPSocket(newSocket));
 
-	//SocketUtil::ReportError(L"TCPSocket::Accept");
+	SocketUtil::ReportError("TCPSocket::Accept");
 	return nullptr;
 }
 
@@ -52,7 +49,8 @@ int TCPSocket::Send(const void* inData, int inLen)									//UDP와 다른점은 전송
 	if (byteSentCount >= 0)
 		return byteSentCount;
 
-	return -1;
+	SocketUtil::ReportError("TCPSocket::Send");
+	return -SocketUtil::GetLastError();
 }
 
 int TCPSocket::Receive(void* inData, int inLen)
@@ -62,7 +60,8 @@ int TCPSocket::Receive(void* inData, int inLen)
 	if (bytesReceivedCount >= 0)
 		return bytesReceivedCount;
 
-	return -1;
+	SocketUtil::ReportError("TCPSocket::Receive");
+	return -SocketUtil::GetLastError();
 }
 
 TCPSocket::~TCPSocket()

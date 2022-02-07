@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-//소켓 사용전에 꼭!!!! 원속 초기화 라는것을 먼저 한다.
+//소켓 사용전에 꼭!!!! 윈속 초기화 라는것을 먼저 한다.
 
 void DoTCPLoop()
 {
@@ -41,7 +41,16 @@ void DoTCPLoop()
 }
 
 int main()
-{
-    cout << "Hello World!\n";
+{	//윈속 초기화
+	bool start = SocketUtil::StaticInit();
+	if (start == true)
+	{
+		cout << "윈속 초기화 성공" << endl;
+	}
+	//서버루프
+	DoTCPLoop();
+
+	// 윈속 제거
+	SocketUtil::CleanUp();
 	return 0;
 }

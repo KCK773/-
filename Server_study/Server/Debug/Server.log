@@ -1,2 +1,13 @@
-﻿  Server.cpp
+﻿  ServerPCH.cpp
+  MemoryBitStream.cpp
+  MemoryStream.cpp
+  SocketUtil.cpp
+  SocketAddressFactory.cpp
+  SocketAddress.cpp
+  Server.cpp
+  StringUtils.cpp
+  UDPSocket.cpp
+  TCPSocket.cpp
+  코드를 생성하고 있습니다...
+MemoryBitStream.obj : warning LNK4075: '/EDITANDCONTINUE'이(가) '/SAFESEH' 사양으로 인해 무시됩니다.
   Server.vcxproj -> C:\Users\alzhx\Desktop\서버스터딩\Server_study\Server\Bin\Debug\Server.exe

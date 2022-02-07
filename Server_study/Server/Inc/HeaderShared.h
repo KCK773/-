@@ -35,6 +35,9 @@ const int SOCKET_ERROR = -1;
 #include "deque"
 #include "unordered_set"
 #include "cassert"
+#include <cstdlib>
+#include <cstdint>
+#include <type_traits>
 
 using std::shared_ptr;
 using std::unique_ptr;
@@ -48,8 +51,13 @@ using std::unordered_set;
 
 using std::make_shared;
 
+#include "StringUtils.h"
 #include "SocketAddress.h"
 #include "SocketAddressFactory.h"
 #include "UDPSocket.h"
 #include "TCPSocket.h"
 #include "SocketUtil.h"
+#include "MemoryStream.h"
+#include "ByteSwap.h"
+#include "MemoryBitStream.h"
+#include "LinkingContext.h"
